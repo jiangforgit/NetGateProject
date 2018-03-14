@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.db.entitys.ClientsUpsEntity" table="clients_ups" schema="net_gate">
+        <id name="id">
+            <column name="id" sql-type="varchar(80)" length="80"/>
+        </id>
+        <property name="clientIp">
+            <column name="client_ip" sql-type="varchar(20)" length="20"/>
+        </property>
+        <property name="clientPort">
+            <column name="client_port" sql-type="int(11)"/>
+        </property>
+        <property name="deviceType">
+            <column name="device_type" sql-type="int(11)"/>
+        </property>
+        <property name="deviceName">
+            <column name="device_name" sql-type="varchar(10)" length="10" not-null="true"/>
+        </property>
+        <property name="account">
+            <column name="account" sql-type="varchar(50)" length="50"/>
+        </property>
+        <property name="locationType">
+            <column name="location_type" sql-type="int(11)"/>
+        </property>
+        <property name="locationLat">
+            <column name="location_lat" sql-type="varchar(12)" length="12"/>
+        </property>
+        <property name="locationLng">
+            <column name="location_lng" sql-type="varchar(12)" length="12"/>
+        </property>
+        <property name="locationAddr">
+            <column name="location_addr" sql-type="varchar(50)" length="50"/>
+        </property>
+        <property name="msgContent">
+            <column name="msg_content" sql-type="varchar(230)" length="230"/>
+        </property>
+        <property name="createTime">
+            <column name="create_time" sql-type="datetime"/>
+        </property>
+    </class>
+</hibernate-mapping>
