@@ -1,9 +1,11 @@
 import com.db.entitys.ClientsUpsEntity;
 import com.db.enums.EnumDeviceType;
 import com.db.enums.EnumLocationType;
+import com.db.enums.EnumPackType;
 import com.db.factorys.ClientDbFactory;
-import com.db.impls.AddClientUp;
-
+import com.entitys.ReceiveData;
+import com.factorys.AnalysReceiveFoctory;
+import com.threadpool.PublicThreadPool;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -33,12 +35,12 @@ public class Main {
                 System.out.println("server-receive:"+sb.toString());
                 InetAddress inetAddress = socket.getInetAddress();
 
-                new Thread(new Runnable() {
+                PublicThreadPool.getPool().getCacheThreadPool().execute(new Runnable() {
                     @Override
                     public void run() {
                         insertClientUpsEntity(inetAddress.getHostAddress(),socket.getPort(),sb.toString());
                     }
-                }).start();
+                });
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -48,22 +50,49 @@ public class Main {
     }
 
     private static void insertClientUpsEntity(String clientip, int clientport, String msgcontent){
-        ClientsUpsEntity entity = new ClientsUpsEntity();
-        entity.setId(UUID.randomUUID().toString());
-        entity.setAccount("110");
-        entity.setClientIp(clientip);
-        entity.setClientPort(clientport);
-        entity.setCreateTime(new Timestamp(new Date().getTime()));
-        entity.setDeviceType(EnumDeviceType.android.ordinal());
-        entity.setDeviceName(EnumDeviceType.android.name());
-        entity.setLocationType(EnumLocationType.baidu.ordinal());
-        entity.setLocationLat("111");
-        entity.setLocationLng("222");
-        entity.setLocationAddr("福建");
-        entity.setMsgContent(msgcontent);
-
-        if(ClientDbFactory.addClientUp().addClientUp(entity)){
-            System.out.println("添加成功");
+        Object receiveData = AnalysReceiveFoctory.getAnalysor().analyseReceivedStr(msgcontent);
+        if(null != receiveData){
+            if(receiveData instanceof ReceiveData){
+                ReceiveData data = (ReceiveData)receiveData;
+                ClientsUpsEntity entity = new ClientsUpsEntity();
+                entity.setId(UUID.randomUUID().toString());
+                entity.setPackid(data.getPid());
+                entity.setAccount(data.getAcount());
+                entity.setClientIp(clientip);
+                entity.setClientPort(clientport);
+                entity.setCreateTime(new Timestamp(new Date().getTime()));
+                int deviceType = EnumDeviceType.android.ordinal();
+                try{
+                    deviceType = Integer.parseInt(data.getDt());
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                entity.setDeviceType(deviceType);
+                entity.setDeviceName(data.getDn());
+                int locationType = EnumLocationType.baidu.ordinal();
+                try{
+                    locationType = Integer.parseInt(data.getLt());
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                entity.setLocationType(locationType);
+                entity.setLocationLat(data.getLat());
+                entity.setLocationLng(data.getLng());
+                entity.setLocationAddr(data.getAddr());
+                int packType = EnumPackType.HeartBeat.ordinal();
+                try {
+                    packType = Integer.parseInt(data.getT());
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                entity.setPackType(packType);
+                entity.setMsgContent(msgcontent);
+//                entity.setPackTime(new Timestamp()data.getTime());
+                entity.setAgent(data.getA());
+                if(ClientDbFactory.addClientUp().addClientUp(entity)){
+                    System.out.println("添加成功");
+                }
+            }
         }
     }
 }

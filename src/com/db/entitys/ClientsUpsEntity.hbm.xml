@@ -8,6 +8,9 @@
         <id name="id">
             <column name="id" sql-type="varchar(80)" length="80"/>
         </id>
+        <property name="packid">
+            <column name="packid" sql-type="varchar(50)" length="50"/>
+        </property>
         <property name="clientIp">
             <column name="client_ip" sql-type="varchar(20)" length="20"/>
         </property>
@@ -35,11 +38,20 @@
         <property name="locationAddr">
             <column name="location_addr" sql-type="varchar(50)" length="50"/>
         </property>
+        <property name="packType">
+            <column name="pack_type" sql-type="int(11)" not-null="true"/>
+        </property>
         <property name="msgContent">
             <column name="msg_content" sql-type="varchar(230)" length="230"/>
         </property>
+        <property name="packTime">
+            <column name="pack_time" sql-type="datetime"/>
+        </property>
         <property name="createTime">
             <column name="create_time" sql-type="datetime"/>
+        </property>
+        <property name="agent">
+            <column name="agent" sql-type="varchar(50)" length="50"/>
         </property>
     </class>
 </hibernate-mapping>
