@@ -15,6 +15,6 @@
     <!-- 指定自动生成数据表的策略 -->
     <property name="hbm2ddl.auto">update</property>
 
-    <mapping resource="com/db/entitys/ClientsUpsEntity.hbm.xml"/>
+      <mapping resource="com/db/entitys/ClientsUpsEntity.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

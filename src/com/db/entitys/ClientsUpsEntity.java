@@ -9,6 +9,7 @@ public class ClientsUpsEntity {
     private int clientPort;
     private int deviceType;
     private String deviceName;
+    private String deviceId;
     private String account;
     private int locationType;
     private String locationLat;
@@ -66,6 +67,14 @@ public class ClientsUpsEntity {
 
     public void setDeviceName(String deviceName) {
         this.deviceName = deviceName;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
 
     public String getAccount() {
@@ -162,6 +171,7 @@ public class ClientsUpsEntity {
         if (packid != null ? !packid.equals(entity.packid) : entity.packid != null) return false;
         if (clientIp != null ? !clientIp.equals(entity.clientIp) : entity.clientIp != null) return false;
         if (deviceName != null ? !deviceName.equals(entity.deviceName) : entity.deviceName != null) return false;
+        if (deviceId != null ? !deviceId.equals(entity.deviceId) : entity.deviceId != null) return false;
         if (account != null ? !account.equals(entity.account) : entity.account != null) return false;
         if (locationLat != null ? !locationLat.equals(entity.locationLat) : entity.locationLat != null) return false;
         if (locationLng != null ? !locationLng.equals(entity.locationLng) : entity.locationLng != null) return false;
@@ -184,6 +194,7 @@ public class ClientsUpsEntity {
         result = 31 * result + clientPort;
         result = 31 * result + deviceType;
         result = 31 * result + (deviceName != null ? deviceName.hashCode() : 0);
+        result = 31 * result + (deviceId != null ? deviceId.hashCode() : 0);
         result = 31 * result + (account != null ? account.hashCode() : 0);
         result = 31 * result + locationType;
         result = 31 * result + (locationLat != null ? locationLat.hashCode() : 0);

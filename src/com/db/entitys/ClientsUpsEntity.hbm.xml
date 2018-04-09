@@ -23,6 +23,9 @@
         <property name="deviceName">
             <column name="device_name" sql-type="varchar(10)" length="10" not-null="true"/>
         </property>
+        <property name="deviceId">
+            <column name="device_id" sql-type="varchar(50)" length="50" not-null="true"/>
+        </property>
         <property name="account">
             <column name="account" sql-type="varchar(50)" length="50"/>
         </property>

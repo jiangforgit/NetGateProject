@@ -18,6 +18,7 @@ import org.dom4j.Element;
  *         <acount>账号</acount>
  *         <dt>device type</dt>
  *         <dn>device name</dn>
+ *         <did>device id</did>
  *         <time>time</time>
  *     </h>
  *     <b>
@@ -51,6 +52,7 @@ public class XMLReceivedAnalysor extends AbstractReceiveData {
             receiveData.setAcount(hElement.elementText("acount"));
             receiveData.setDt(hElement.elementText("dt"));
             receiveData.setDn(hElement.elementText("dn"));
+            receiveData.setDid(hElement.elementText("did"));
             receiveData.setTime(hElement.elementText("time"));
             Element bElement = root.element("b");
             receiveData.setMsg(bElement.elementText("msg"));

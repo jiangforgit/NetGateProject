@@ -9,6 +9,7 @@ public class ReceiveData {
     private String acount = "";
     private String dt = "";
     private String dn = "";
+    private String did = "";
     private String time = "";
     private String msg = "";
     private String lt = "";
@@ -118,5 +119,13 @@ public class ReceiveData {
 
     public void setAddr(String addr) {
         this.addr = addr;
+    }
+
+    public String getDid() {
+        return did;
+    }
+
+    public void setDid(String did) {
+        this.did = did;
     }
 }

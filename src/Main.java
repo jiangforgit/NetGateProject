@@ -9,9 +9,7 @@ import com.threadpool.PublicThreadPool;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.net.*;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.UUID;
@@ -19,26 +17,29 @@ import java.util.UUID;
 public class Main {
 
     public static final int PORT = 23023;
+    public static DatagramSocket socket;
 
     public static void main(String[] args) {
+        try{
+            socket = new DatagramSocket(PORT);
+        }catch (SocketException se){
+            se.printStackTrace();
+        }
         while (true){
             try {
-                ServerSocket serverSocket = new ServerSocket(PORT);
-                Socket socket = serverSocket.accept();
-                Reader reader = new InputStreamReader(socket.getInputStream());
-                char chars[] = new char[64];
-                int len;
-                StringBuilder sb = new StringBuilder();
-                while ((len=reader.read(chars)) != -1) {
-                    sb.append(new String(chars, 0, len));
-                }
-                System.out.println("server-receive:"+sb.toString());
-                InetAddress inetAddress = socket.getInetAddress();
-
+                byte[] data = new byte[1024];
+                DatagramPacket packet = new DatagramPacket(data, data.length);
+                InetAddress address = InetAddress.getLocalHost();
+                String addr = address.getHostAddress();
+                System.out.println("addr="+addr);
+                System.out.println("before receive");
+                socket.receive(packet);
+                String responseStr = new String(data, 0, packet.getLength());
+                System.out.println("receive str = "+responseStr);
                 PublicThreadPool.getPool().getCacheThreadPool().execute(new Runnable() {
                     @Override
                     public void run() {
-                        insertClientUpsEntity(inetAddress.getHostAddress(),socket.getPort(),sb.toString());
+                        insertClientUpsEntity(packet.getAddress().getHostAddress(),socket.getPort(),responseStr);
                     }
                 });
             } catch (IOException e) {
